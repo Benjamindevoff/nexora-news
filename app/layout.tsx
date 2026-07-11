@@ -7,7 +7,8 @@ export const metadata: Metadata = {
     default: "Nexora News | Technology, Politics & World Affairs",
     template: "%s | Nexora News",
   },
-  description: "Independent reporting and analysis on artificial intelligence, cybersecurity, programming, politics and world affairs.",
+  description:
+    "Independent reporting and analysis on artificial intelligence, cybersecurity, programming, politics and world affairs.",
   other: {
     "codex-preview": "development",
     "theme-color": "#740f1c",
@@ -18,7 +19,11 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Nexora News",
   },
-  twitter: { card: "summary_large_image", title: "Nexora News", description: "Facts first. Context always." },
+  twitter: {
+    card: "summary_large_image",
+    title: "Nexora News",
+    description: "Facts first. Context always.",
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -39,18 +44,44 @@ export default function RootLayout({
     correctionsPolicy: "https://nexoranews.xyz/corrections-policy",
     publishingPrinciples: "https://nexoranews.xyz/editorial-policy",
   };
+
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Nexora News",
     url: "https://nexoranews.xyz",
-    potentialAction: { "@type": "SearchAction", target: "https://nexoranews.xyz/latest?q={search_term_string}", "query-input": "required name=search_term_string" },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://nexoranews.xyz/latest?q={search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
   };
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6487901261529475"
+          crossOrigin="anonymous"
+        />
+      </head>
+
       <body className="antialiased">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+
         {children}
       </body>
     </html>
