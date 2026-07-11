@@ -1,12 +1,5 @@
 const paths = [
   "",
-  "ai",
-  "cybersecurity",
-  "programming",
-  "politics",
-  "world-news",
-  "opinion",
-  "latest",
   "about",
   "contact",
   "editorial-policy",
@@ -14,16 +7,26 @@ const paths = [
   "privacy",
   "terms",
   "cookies",
-  "ethics",
-  "advertising",
   "dmca",
 
-  "ai/the-race-for-smaller-smarter-ai-moves-from-the-cloud-to-the-edge",
-  "cybersecurity/security-teams-rethink-identity-as-the-network-perimeter-fades",
-  "programming/why-typed-systems-are-winning-the-next-era-of-web-development",
+  "article/how-small-ai-models-are-changing-on-device-computing",
+  "article/what-ai-benchmarks-can-and-cannot-prove",
+  "article/passkeys-explained-beyond-the-password",
+  "article/zero-trust-is-an-architecture-not-a-product",
+  "article/why-software-supply-chain-security-matters",
+  "article/why-typescript-became-a-default-for-large-web-projects",
+  "article/how-to-evaluate-an-open-source-dependency",
+  "article/why-web-performance-is-an-accessibility-issue",
+  "article/what-data-centers-mean-for-local-power-grids",
+  "article/the-real-tradeoffs-of-satellite-internet",
+  "article/how-digital-public-services-can-earn-trust",
+  "article/why-ai-regulation-keeps-returning-to-transparency",
+  "article/why-semiconductor-policy-is-about-more-than-factories",
+  "article/how-to-read-claims-about-green-technology",
+  "article/a-practical-guide-to-verifying-breaking-news",
 ];
 
-function escapeXml(value: string) {
+function escapeXml(value: string): string {
   return value
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -34,17 +37,19 @@ function escapeXml(value: string) {
 
 export function GET() {
   const baseUrl = "https://nexoranews.xyz";
+  const today = new Date().toISOString().split("T")[0];
 
   const urls = paths
     .map((path) => {
       const url = path ? `${baseUrl}/${path}` : `${baseUrl}/`;
+      const isArticle = path.startsWith("article/");
 
       return `
   <url>
     <loc>${escapeXml(url)}</loc>
-    <lastmod>2026-07-11</lastmod>
-    <changefreq>${path === "" || path === "latest" ? "daily" : "weekly"}</changefreq>
-    <priority>${path === "" ? "1.0" : path.includes("/") ? "0.8" : "0.7"}</priority>
+    <lastmod>${today}</lastmod>
+    <changefreq>${isArticle ? "monthly" : "weekly"}</changefreq>
+    <priority>${path === "" ? "1.0" : isArticle ? "0.8" : "0.6"}</priority>
   </url>`;
     })
     .join("");
@@ -55,9 +60,10 @@ ${urls}
 </urlset>`;
 
   return new Response(body, {
+    status: 200,
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=900",
+      "Cache-Control": "public, max-age=0, must-revalidate",
     },
   });
 }
